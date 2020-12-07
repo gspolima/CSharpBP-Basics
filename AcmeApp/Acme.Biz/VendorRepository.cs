@@ -8,9 +8,6 @@ namespace Acme.Biz
 {
     public class VendorRepository
     {
-        /// <summary>
-        /// Retrieve one vendor.
-        /// </summary>
         public Vendor Retrieve(int vendorId)
         {
             // Create the instance of the Vendor class

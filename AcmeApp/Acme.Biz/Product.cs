@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Acme.Common;
+using static Acme.Common.LoggingService;
 
 namespace Acme.Biz
 {
@@ -19,6 +21,21 @@ namespace Acme.Biz
             this.Name = name;
             this.Description = description;
             Console.WriteLine($"Product instance created passing parameters. Name: {Name}");
+        }
+
+        private Vendor vendor;
+
+        public Vendor Vendor
+        {
+            get 
+            {
+                if (vendor == null)
+                {
+                    vendor = new Vendor();
+                }
+                return vendor;                
+            }
+            set { vendor = value; }
         }
 
         private string name;
@@ -47,6 +64,13 @@ namespace Acme.Biz
 
         public string SayHello()
         {
+            vendor.SendWelcomeEmail("Message from Product");
+
+            var emailservice = new EmailService();
+            emailservice.SendMessage("New Product", this.Name, "sales@ivia.com.br");
+
+            var loggingService = LogAction("Saying hello");
+
             return $"Hello {name} ({id}): {description}";
         }
     }
