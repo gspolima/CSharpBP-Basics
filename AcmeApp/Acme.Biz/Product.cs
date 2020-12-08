@@ -14,13 +14,21 @@ namespace Acme.Biz
         {
             Console.WriteLine("Product instance created");
         }
-
+        
         public Product(int id, string name, string description) : this()
         {
             this.Id = id;
             this.Name = name;
             this.Description = description;
             Console.WriteLine($"Product instance created passing parameters. Name: {Name}");
+        }
+
+        private DateTime? availabilityDate;
+
+        public DateTime? AvailabilityDate
+        {
+            get { return availabilityDate; }
+            set { availabilityDate = value; }
         }
 
         private Vendor vendor;
@@ -71,7 +79,8 @@ namespace Acme.Biz
 
             var loggingService = LogAction("Saying hello");
 
-            return $"Hello {name} ({id}): {description}";
+            return  $"Hello {Name} ({Id}): {Description}. " +
+                    $"Available on: {AvailabilityDate?.ToShortDateString()}";
         }
     }
 }

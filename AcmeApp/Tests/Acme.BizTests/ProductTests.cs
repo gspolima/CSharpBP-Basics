@@ -21,7 +21,7 @@ namespace Acme.BizTests
             product.Vendor.CompanyName = "Amazon";
             var actual = product.SayHello();
 
-            var expected = "Hello Kindle (1): Waterproof e-reader";
+            var expected = "Hello Kindle (1): Waterproof e-reader. Available on: ";
             Assert.AreEqual(expected, actual);
         }
 
