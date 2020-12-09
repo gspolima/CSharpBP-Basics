@@ -46,5 +46,36 @@ namespace Acme.BizTests
 
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void InchesPerMeterHoldsProperValue()
+        {
+            var expected = 78.74;
+            var actual = 2 * Product.InchesPerMeter;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void DefaultMinimumPriceProperlySet()
+        {
+            var product = new Product();
+
+            var expected = .24m;
+            var actual = product.MinimumPrice;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SetProperMinimumPriceIfBulk()
+        {
+            var product = new Product(1, "Bulk of books", "A library");
+
+            var expected = .69m;
+            var actual = product.MinimumPrice;
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

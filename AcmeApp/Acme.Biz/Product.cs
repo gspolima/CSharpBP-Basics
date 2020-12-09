@@ -10,9 +10,14 @@ namespace Acme.Biz
 {
     public class Product
     {
+        public readonly decimal MinimumPrice;
+        
+        public const double InchesPerMeter = 39.37;
+
         public Product()
         {
             Console.WriteLine("Product instance created");
+            this.MinimumPrice = .24m;
         }
         
         public Product(int id, string name, string description) : this()
@@ -20,6 +25,8 @@ namespace Acme.Biz
             this.Id = id;
             this.Name = name;
             this.Description = description;
+            if (this.Name.StartsWith("Bulk"))
+                this.MinimumPrice = .69m;
             Console.WriteLine($"Product instance created passing parameters. Name: {Name}");
         }
 
@@ -38,9 +45,7 @@ namespace Acme.Biz
             get 
             {
                 if (vendor == null)
-                {
                     vendor = new Vendor();
-                }
                 return vendor;                
             }
             set { vendor = value; }
