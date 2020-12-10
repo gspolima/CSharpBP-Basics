@@ -18,6 +18,7 @@ namespace Acme.Biz
         {
             Console.WriteLine("Product instance created");
             this.MinimumPrice = .24m;
+            this.Category = "Tools";
         }
         
         public Product(int id, string name, string description) : this()
@@ -31,7 +32,6 @@ namespace Acme.Biz
         }
 
         private DateTime? availabilityDate;
-
         public DateTime? AvailabilityDate
         {
             get { return availabilityDate; }
@@ -39,7 +39,6 @@ namespace Acme.Biz
         }
 
         private Vendor vendor;
-
         public Vendor Vendor
         {
             get 
@@ -51,15 +50,17 @@ namespace Acme.Biz
             set { vendor = value; }
         }
 
+        public string Category { get; set; }
+
+        public int SequenceNumber { get; set; } = 1;
+
         public string ValidationMessage { get; private set; }
 
         private string name;
-
         public string Name
         {
             get 
             {
-
                 var formattedName = name?.Trim();
                 return formattedName;
             }
@@ -81,7 +82,6 @@ namespace Acme.Biz
         }
 
         private string description;
-
         public string Description
         {
             get { return description; }
@@ -89,14 +89,13 @@ namespace Acme.Biz
         }
 
         private int id;
-
         public int Id
         {
             get { return id; }
             set { id = value; }
         }
 
-        public string SayHello()
+        public string SayHello() 
         {
             vendor.SendWelcomeEmail("Message from Product");
 
