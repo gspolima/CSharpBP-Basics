@@ -50,7 +50,7 @@ namespace Acme.Biz
             set { vendor = value; }
         }
 
-        public string Category { get; set; }
+        internal string Category { get; set; }
 
         public int SequenceNumber { get; set; } = 1;
 
