@@ -51,12 +51,33 @@ namespace Acme.Biz
             set { vendor = value; }
         }
 
+        public string ValidationMessage { get; private set; }
+
         private string name;
 
         public string Name
         {
-            get { return name; }
-            set { name = value; }
+            get 
+            {
+
+                var formattedName = name?.Trim();
+                return formattedName;
+            }
+            set 
+            {
+                if (value.Length < 3)
+                {
+                    ValidationMessage = "The name must be at least 3 characters long";
+                }
+                else if (value.Length > 20)
+                {
+                    ValidationMessage = "The name cannot be more than 20 characters long";
+                }
+                else
+                {
+                    name = value;
+                }
+            }
         }
 
         private string description;

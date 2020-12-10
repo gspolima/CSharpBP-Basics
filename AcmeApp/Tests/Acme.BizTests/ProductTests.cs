@@ -26,7 +26,7 @@ namespace Acme.BizTests
         }
 
         [TestMethod]
-        public void AssignValuesWhenPassingParametersToConstructor()
+        public void SetValuesFromConstructorParameters()
         {
             var product = new Product(1, "Office Chair", "Adjustable executive chair");
 
@@ -48,7 +48,7 @@ namespace Acme.BizTests
         }
 
         [TestMethod]
-        public void InchesPerMeterHoldsProperValue()
+        public void InchesPerMeterValueIsRight()
         {
             var expected = 78.74;
             var actual = 2 * Product.InchesPerMeter;
@@ -57,7 +57,7 @@ namespace Acme.BizTests
         }
 
         [TestMethod]
-        public void DefaultMinimumPriceProperlySet()
+        public void SetDefaultMinimumPrice()
         {
             var product = new Product();
 
@@ -68,7 +68,7 @@ namespace Acme.BizTests
         }
 
         [TestMethod]
-        public void SetProperMinimumPriceIfBulk()
+        public void SetMinimumPriceIfBulk()
         {
             var product = new Product(1, "Bulk of books", "A library");
 
@@ -77,5 +77,43 @@ namespace Acme.BizTests
 
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void NameIsTooShort()
+        {
+            var product = new Product();
+
+            product.Name = "M1";
+
+            var expected = "The name must be at least 3 characters long";
+            var actual = product.ValidationMessage;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void NameIsTooLong()
+        {
+            var product = new Product();
+
+            product.Name = "JetBrains Resharper for Visual Studio 2019";
+
+            var expected = "The name cannot be more than 20 characters long";
+            var actual = product.ValidationMessage;
+            Assert.AreEqual(expected, actual);
+        }
+        
+        [TestMethod]
+        public void NameIsJustRight()
+        {
+            var product = new Product();
+
+            product.Name = "Apple Watch";
+
+            string expected = null;
+            var actual = product.ValidationMessage;
+            Assert.AreEqual("Apple Watch", product.Name);
+            Assert.AreEqual(expected, actual);
+        }
+
     }
 }
