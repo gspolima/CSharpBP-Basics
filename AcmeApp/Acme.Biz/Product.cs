@@ -50,6 +50,8 @@ namespace Acme.Biz
             set { vendor = value; }
         }
 
+        public string ProductCode => $"{this.Category}-{this.SequenceNumber}";
+
         internal string Category { get; set; }
 
         public int SequenceNumber { get; set; } = 1;
