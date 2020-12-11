@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Acme.Common;
 
 namespace Acme.Biz.Tests
 {
@@ -54,6 +55,41 @@ namespace Acme.Biz.Tests
 
             // Assert
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void PlaceNewOrder()
+        {
+            var vendor = new Vendor();
+            var product = new Product(12, "Bongos", "Latino instruments");
+
+            var expected = true;
+            var actual = vendor.PlaceOrder(product, 9);
+            
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void PlaceOrderWithNullProduct()
+        {
+            var vendor = new Vendor();
+
+            var actual = vendor.PlaceOrder(null, 9);
+
+            // Assert that the exception is thrown
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void PlaceOrderWithSubzeroQuantity()
+        {
+            var vendor = new Vendor();
+            var product = new Product();
+
+            var actual = vendor.PlaceOrder(product, -3);
+
+            // Assert that the exception is thrown
         }
     }
 }
