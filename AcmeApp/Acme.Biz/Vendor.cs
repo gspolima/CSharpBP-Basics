@@ -10,29 +10,59 @@ namespace Acme.Biz
     public class Vendor 
     {
         public int VendorId { get; set; }
+
         public string CompanyName { get; set; }
+
         public string Email { get; set; }
 
         public bool PlaceOrder(Product product, int quantity)
         {
-            if (product == null)
-                throw new ArgumentNullException($"{nameof(product)} cannot be null");
-            if (quantity <= 0)
-                throw new ArgumentOutOfRangeException($"{nameof(quantity)} must be positive");
-
             var success = false;
-
-            var orderText = $"Order from Acme, Inc " +
-                            $"{Environment.NewLine}Product: {product.ProductCode}" +
-                            $"{Environment.NewLine}Quantity: {quantity}";
-
-            var email = new EmailService();
-            var confirmation = email.SendMessage("New Order", orderText, product.Vendor.Email);
-
-            if (confirmation.Contains("sent"))
-                success = true;
-
+            if (!IsProductNull(product) && IsQuantityValid(quantity))
+            {
+                string orderText = ComposeOrderText(product.ProductCode, quantity);
+                string confirmation = ComposeEmailConfirmation(orderText, product.Vendor.Email);
+                success = verifyEmailSent(confirmation);
+            }
             return success;
+        }
+
+        internal string ComposeEmailConfirmation(string orderText, string emailAddress)
+        {
+            var email = new EmailService();
+            var confirmation = email.SendMessage("New Order", orderText, emailAddress);
+            return confirmation;
+        }
+
+        internal bool verifyEmailSent(string confirmation)
+        {
+            if (confirmation.StartsWith("Message sent: "))
+                return true;
+            else
+                return false;
+        }
+
+        internal string ComposeOrderText(string productCode, int quantity)
+        {
+            return $"Order from Acme, Inc " +
+                    $"{Environment.NewLine}Product: {productCode}" +
+                    $"{Environment.NewLine}Quantity: {quantity}";
+        }
+
+        internal bool IsQuantityValid(int quantity)
+        {
+            if (quantity <= 0)
+                return false;
+            else
+                return true;
+        }
+
+        internal bool IsProductNull(Product product)
+        {
+            if (product == null)
+                return true;
+            else
+                return false;
         }
 
         public string SendWelcomeEmail(string message)

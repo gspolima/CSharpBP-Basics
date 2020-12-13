@@ -70,26 +70,26 @@ namespace Acme.Biz.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void PlaceOrderWithNullProduct()
         {
             var vendor = new Vendor();
 
+            var expected = false;
             var actual = vendor.PlaceOrder(null, 9);
 
-            // Assert that the exception is thrown
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void PlaceOrderWithSubzeroQuantity()
         {
             var vendor = new Vendor();
             var product = new Product();
 
+            var expected = false;
             var actual = vendor.PlaceOrder(product, -3);
 
-            // Assert that the exception is thrown
+            Assert.AreEqual(expected, actual);
         }
     }
 }
