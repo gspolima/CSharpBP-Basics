@@ -63,33 +63,30 @@ namespace Acme.Biz.Tests
             var vendor = new Vendor();
             var product = new Product(12, "Bongos", "Latino instruments");
 
-            var expected = true;
             var actual = vendor.PlaceOrder(product, 9);
             
-            Assert.AreEqual(expected, actual);
+            Assert.IsTrue(actual.Success);
         }
 
         [TestMethod]
-        public void PlaceOrderWithNullProduct()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void PlaceOrder_NullProduct()
         {
             var vendor = new Vendor();
 
-            var expected = false;
-            var actual = vendor.PlaceOrder(null, 9);
-
-            Assert.AreEqual(expected, actual);
+            vendor.PlaceOrder(null, 9);
+            // Assert exception
         }
 
         [TestMethod]
-        public void PlaceOrderWithSubzeroQuantity()
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void PlaceOrder_SubzeroQuantity()
         {
             var vendor = new Vendor();
             var product = new Product();
 
-            var expected = false;
-            var actual = vendor.PlaceOrder(product, -3);
-
-            Assert.AreEqual(expected, actual);
+            vendor.PlaceOrder(product, -3);
+            // Assert exception
         }
     }
 }

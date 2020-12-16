@@ -15,19 +15,22 @@ namespace Acme.Biz
 
         public string Email { get; set; }
 
-        public bool PlaceOrder(Product product, int quantity)
-        {
-            var success = false;
-            if (!IsProductNull(product) && IsQuantityValid(quantity))
-            {
-                string orderText = ComposeOrderText(product.ProductCode, quantity);
-                string confirmation = ComposeEmailConfirmation(orderText, product.Vendor.Email);
-                success = verifyEmailSent(confirmation);
-            }
-            return success;
+        public OperationResult PlaceOrder(Product product, int quantity)
+        {            
+            if (IsProductNull(product)) 
+                throw new ArgumentNullException($"{nameof(product)} is null");
+            if (!IsQuantityValid(quantity))
+                throw new ArgumentOutOfRangeException($"{nameof(quantity)} is out of range");
+
+            string orderText = ComposeOrderText(product.ProductCode, quantity);
+            string confirmation = SendEmailConfirmation(orderText, product.Vendor.Email);
+            var success = verifyEmailSent(confirmation);
+
+            var result = new OperationResult(success, confirmation); 
+            return result;
         }
 
-        internal string ComposeEmailConfirmation(string orderText, string emailAddress)
+        internal string SendEmailConfirmation(string orderText, string emailAddress)
         {
             var email = new EmailService();
             var confirmation = email.SendMessage("New Order", orderText, emailAddress);
