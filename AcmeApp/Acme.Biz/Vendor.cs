@@ -26,8 +26,68 @@ namespace Acme.Biz
             string confirmation = SendEmailConfirmation(orderText, product.Vendor.Email);
             var success = verifyEmailSent(confirmation);
 
-            var result = new OperationResult(success, confirmation); 
+            var result = new OperationResult(success, orderText); 
             return result;
+        }
+
+        public OperationResult PlaceOrder(Product product, int quantity, DateTimeOffset? deliverBy)
+        {
+            if (IsProductNull(product))
+                throw new ArgumentNullException($"{nameof(product)} is null");
+            if (!IsQuantityValid(quantity))
+                throw new ArgumentOutOfRangeException($"{nameof(quantity)} is out of range");
+            if (deliverBy <= DateTimeOffset.Now)
+                throw new ArgumentOutOfRangeException($"{nameof(deliverBy)} is invalid");
+
+            string orderText = ComposeOrderText(product.ProductCode, quantity);
+            if (deliverBy.HasValue)
+            {
+                orderText = AppendDeliverDate(deliverBy.Value, orderText);
+            }
+            string confirmation = SendEmailConfirmation(orderText, product.Vendor.Email);
+            var success = verifyEmailSent(confirmation);
+
+            var result = new OperationResult(success, orderText);
+            return result;
+        }
+
+        public OperationResult PlaceOrder(Product product, int quantity, 
+                                            DateTimeOffset? deliverBy, string instructions)
+        {
+            if (IsProductNull(product))
+                throw new ArgumentNullException($"{nameof(product)} is null");
+
+            if (!IsQuantityValid(quantity))
+                throw new ArgumentOutOfRangeException($"{nameof(quantity)} is out of range");
+
+            if (deliverBy <= DateTimeOffset.Now)
+                throw new ArgumentOutOfRangeException($"{nameof(deliverBy)} is invalid");
+
+            string orderText = ComposeOrderText(product.ProductCode, quantity);
+
+            if (deliverBy.HasValue)
+                orderText = AppendDeliverDate(deliverBy.Value, orderText);
+
+            if (!String.IsNullOrWhiteSpace(instructions))
+                orderText = ApppendInstructions(instructions, orderText);
+
+            string confirmation = SendEmailConfirmation(orderText, product.Vendor.Email);
+            var success = verifyEmailSent(confirmation);
+
+            var result = new OperationResult(success, orderText);
+            return result;
+        }
+
+        private string ApppendInstructions(string instructions, string orderText)
+        {
+            orderText += $"{Environment.NewLine}Instructions: {instructions}";
+            return orderText;
+        }
+
+        private string AppendDeliverDate(DateTimeOffset? deliverBy, string orderText)
+        {
+            orderText += $"{Environment.NewLine}Deliver by: {deliverBy.Value.ToString("d")}";
+            return orderText;
         }
 
         internal string SendEmailConfirmation(string orderText, string emailAddress)
@@ -47,7 +107,7 @@ namespace Acme.Biz
 
         internal string ComposeOrderText(string productCode, int quantity)
         {
-            return $"Order from Acme, Inc " +
+            return $"Order from Acme, Inc" +
                     $"{Environment.NewLine}Product: {productCode}" +
                     $"{Environment.NewLine}Quantity: {quantity}";
         }

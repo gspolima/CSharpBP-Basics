@@ -88,5 +88,91 @@ namespace Acme.Biz.Tests
             vendor.PlaceOrder(product, -3);
             // Assert exception
         }
+
+        [TestMethod]
+        public void PlaceOrder_DeliverBy_JustRight()
+        {
+            var vendor = new Vendor();
+            var product = new Product();
+
+            var expectedMessage = "Order from Acme, Inc"+
+                                    $"{Environment.NewLine}Product: Tools-1"+
+                                    $"{Environment.NewLine}Quantity: 4"+
+                                    $"{Environment.NewLine}Deliver by: 24/12/2020";
+            var actual = vendor.PlaceOrder(product, 4, 
+                                            new DateTimeOffset(
+                                                2020, 12, 24, 0, 0, 0, 
+                                                new TimeSpan(-4, 0, 0)));
+            Assert.AreEqual(expectedMessage, actual.Message);
+            Assert.IsTrue(actual.Success);
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void PlaceOrder_DeliverBy_PastDate()
+        {
+            var vendor = new Vendor();
+            var product = new Product();
+
+            var actual = vendor.PlaceOrder(product, 4,
+                                            new DateTimeOffset(
+                                                2020, 12, 10, 0, 0, 0,
+                                                new TimeSpan(-4, 0, 0)));
+            // Assert exception
+        }
+
+        [TestMethod]
+        public void PlaceOrder_DeliverBy_NullDate()
+        {
+            var vendor = new Vendor();
+            var product = new Product();
+
+            var actual = vendor.PlaceOrder(product, 4, null);
+            var expectedMessage = "Order from Acme, Inc"+
+                "\r\nProduct: Tools-1\r\nQuantity: 4";
+            
+            Assert.IsTrue(actual.Success);
+            Assert.AreEqual(expectedMessage, actual.Message);
+        }
+
+        [TestMethod]
+        public void PlaceOrder_DeliverBy_Instructions()
+        {
+            var vendor = new Vendor();
+            var product = new Product();
+
+            var actual = vendor.PlaceOrder(product, 4, new DateTimeOffset(
+                                                       2020, 12, 24, 0, 0, 0, 
+                                                        new TimeSpan(-4, 0, 0)), 
+                                                        "Handle with care");
+            var expectedMessage = $"Order from Acme, Inc" +
+                                    $"{Environment.NewLine}Product: Tools-1" +
+                                    $"{Environment.NewLine}Quantity: 4" +
+                                    $"{Environment.NewLine}Deliver by: 24/12/2020" +
+                                    $"{Environment.NewLine}Instructions: Handle with care";
+
+            Assert.IsTrue(actual.Success);
+            Assert.AreEqual(expectedMessage, actual.Message);
+        }
+
+        [TestMethod]
+        public void PlaceOrder_DeliverBy_NullInstructions()
+        {
+            var vendor = new Vendor();
+            var product = new Product();
+
+            var actual = vendor.PlaceOrder(product, 4, new DateTimeOffset(
+                                                       2020, 12, 24, 0, 0, 0,
+                                                        new TimeSpan(-4, 0, 0)),
+                                                        null);
+            var expectedMessage = $"Order from Acme, Inc" +
+                                    $"{Environment.NewLine}Product: Tools-1" +
+                                    $"{Environment.NewLine}Quantity: 4" +
+                                    $"{Environment.NewLine}Deliver by: 24/12/2020";
+
+            Assert.IsTrue(actual.Success);
+            Assert.AreEqual(expectedMessage, actual.Message);
+        }
     }
 }
