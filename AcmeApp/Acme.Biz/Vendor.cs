@@ -16,39 +16,13 @@ namespace Acme.Biz
         public string Email { get; set; }
 
         public OperationResult PlaceOrder(Product product, int quantity)
-        {            
-            if (IsProductNull(product)) 
-                throw new ArgumentNullException($"{nameof(product)} is null");
-            if (!IsQuantityValid(quantity))
-                throw new ArgumentOutOfRangeException($"{nameof(quantity)} is out of range");
-
-            string orderText = ComposeOrderText(product.ProductCode, quantity);
-            string confirmation = SendEmailConfirmation(orderText, product.Vendor.Email);
-            var success = verifyEmailSent(confirmation);
-
-            var result = new OperationResult(success, orderText); 
-            return result;
+        {
+            return PlaceOrder(product, quantity);
         }
 
         public OperationResult PlaceOrder(Product product, int quantity, DateTimeOffset? deliverBy)
         {
-            if (IsProductNull(product))
-                throw new ArgumentNullException($"{nameof(product)} is null");
-            if (!IsQuantityValid(quantity))
-                throw new ArgumentOutOfRangeException($"{nameof(quantity)} is out of range");
-            if (deliverBy <= DateTimeOffset.Now)
-                throw new ArgumentOutOfRangeException($"{nameof(deliverBy)} is invalid");
-
-            string orderText = ComposeOrderText(product.ProductCode, quantity);
-            if (deliverBy.HasValue)
-            {
-                orderText = AppendDeliverDate(deliverBy.Value, orderText);
-            }
-            string confirmation = SendEmailConfirmation(orderText, product.Vendor.Email);
-            var success = verifyEmailSent(confirmation);
-
-            var result = new OperationResult(success, orderText);
-            return result;
+            return PlaceOrder(product, quantity, deliverBy);
         }
 
         public OperationResult PlaceOrder(Product product, int quantity, 
