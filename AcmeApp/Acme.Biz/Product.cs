@@ -31,6 +31,8 @@ namespace Acme.Biz
             Console.WriteLine($"Product instance created passing parameters. Name: {Name}");
         }
 
+        public decimal Cost { get; set; }
+
         private DateTime? availabilityDate;
         public DateTime? AvailabilityDate
         {
@@ -49,6 +51,9 @@ namespace Acme.Biz
             }
             set { vendor = value; }
         }
+
+        public decimal CalculateSuggestedPrice(decimal markupPercentage)
+            => this.Cost + ((this.Cost * markupPercentage) / 100);
 
         public string ProductCode => $"{this.Category}-{this.SequenceNumber}";
 
@@ -111,8 +116,6 @@ namespace Acme.Biz
         }
 
         public override string ToString()
-        {
-            return $"{Name} ({Id})";
-        }
+            => $"{this.Name} ({this.Id})";
     }
 }

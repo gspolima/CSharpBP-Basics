@@ -180,5 +180,17 @@ namespace Acme.BizTests
             var actual = product.ProductCode;
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CalculateRightSuggestedPrice()
+        {
+            var product = new Product();
+            product.Cost = 15m;
+
+            var expected = 16.5m;
+            var actual = product.CalculateSuggestedPrice(10m);
+            
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
