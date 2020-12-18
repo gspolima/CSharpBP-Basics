@@ -109,5 +109,10 @@ namespace Acme.Biz
             return  $"Hello {Name} ({Id}): {Description}. " +
                     $"Available on: {AvailabilityDate?.ToShortDateString()}";
         }
+
+        public override string ToString()
+        {
+            return $"{Name} ({Id})";
+        }
     }
 }
