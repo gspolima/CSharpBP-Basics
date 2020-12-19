@@ -174,5 +174,64 @@ namespace Acme.Biz.Tests
             Assert.IsTrue(actual.Success);
             Assert.AreEqual(expectedMessage, actual.Message);
         }
+        [TestMethod]
+        public void PlaceOrder_IncludeAddress_SendCopy()
+        {
+            var vendor = new Vendor();
+            var product = new Product();
+
+            var actual = vendor.PlaceOrder(product, 4,
+                                includeAddress: Vendor.IncludeAddress.Yes,
+                                sendCopy: Vendor.SendCopy.No);
+            var expectedOrderText = $"Test With Address With Copy";
+
+            Assert.IsTrue(actual.Success);
+            Assert.AreEqual(expectedOrderText, actual.Message);
+        }
+
+        [TestMethod]
+        public void PlaceOrder_IncludeAddress()
+        {
+            var vendor = new Vendor();
+            var product = new Product();
+
+            var actual = vendor.PlaceOrder(product, 4,
+                                includeAddress: Vendor.IncludeAddress.Yes,
+                                sendCopy: Vendor.SendCopy.No);
+            var expectedOrderText = $"Test With Address";
+
+            Assert.IsTrue(actual.Success);
+            Assert.AreEqual(expectedOrderText, actual.Message);
+        }
+
+        [TestMethod]
+        public void PlaceOrder_SendCopy()
+        {
+            var vendor = new Vendor();
+            var product = new Product();
+
+            var actual = vendor.PlaceOrder(product, 4,
+                                includeAddress: Vendor.IncludeAddress.No,
+                                sendCopy: Vendor.SendCopy.Yes);
+            var expectedOrderText = $"Test With Copy";
+
+            Assert.IsTrue(actual.Success);
+            Assert.AreEqual(expectedOrderText, actual.Message);
+        }
+        [TestMethod]
+        public void PlaceOrder_NoAddress_NoCopy()
+        {
+            var vendor = new Vendor();
+            var product = new Product();
+
+            var actual = vendor.PlaceOrder(product, 4,
+                                includeAddress: Vendor.IncludeAddress.No,
+                                sendCopy: Vendor.SendCopy.No);
+            var expectedOrderText = $"Test";
+
+            Assert.IsTrue(actual.Success);
+            Assert.AreEqual(expectedOrderText, actual.Message);
+        }
+
     }
 }

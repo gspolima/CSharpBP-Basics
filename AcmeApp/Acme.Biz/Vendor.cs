@@ -15,6 +15,10 @@ namespace Acme.Biz
 
         public string Email { get; set; }
 
+        public enum IncludeAddress { Yes, No };
+
+        public enum SendCopy { Yes, No };
+
         public OperationResult PlaceOrder(Product product, int quantity)
         {
             return PlaceOrder(product, quantity);
@@ -25,6 +29,14 @@ namespace Acme.Biz
             return PlaceOrder(product, quantity, deliverBy);
         }
 
+        /// <summary>
+        /// Places a new product order
+        /// </summary>
+        /// <param name="product">product to be ordered</param>
+        /// <param name="quantity">quantity of the product</param>
+        /// <param name="deliverBy">The estimated time arrival of the order</param>
+        /// <param name="instructions">optional further instructions</param>
+        /// <returns>success flag and order text</returns>
         public OperationResult PlaceOrder(Product product, int quantity, 
                                             DateTimeOffset? deliverBy, string instructions)
         {
@@ -46,10 +58,24 @@ namespace Acme.Biz
                 orderText = ApppendInstructions(instructions, orderText);
 
             string confirmation = SendEmailConfirmation(orderText, product.Vendor.Email);
-            var success = verifyEmailSent(confirmation);
+            var success = VerifyEmailSent(confirmation);
 
             var result = new OperationResult(success, orderText);
             return result;
+        }
+
+        public OperationResult PlaceOrder(Product product, int quantity, 
+                                            IncludeAddress includeAddress, SendCopy sendCopy)
+        {
+            var ordertext = "Test";
+
+            if (includeAddress == Vendor.IncludeAddress.Yes)
+                ordertext += " With Address";
+            if (sendCopy == Vendor.SendCopy.No)
+                ordertext += " With Copy";
+
+            var operationResult = new OperationResult(true, ordertext);
+            return operationResult;
         }
 
         private string ApppendInstructions(string instructions, string orderText)
@@ -71,7 +97,7 @@ namespace Acme.Biz
             return confirmation;
         }
 
-        internal bool verifyEmailSent(string confirmation)
+        internal bool VerifyEmailSent(string confirmation)
         {
             if (confirmation.StartsWith("Message sent: "))
                 return true;
