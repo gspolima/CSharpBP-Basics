@@ -71,7 +71,7 @@ namespace Acme.Biz
 
             if (includeAddress == Vendor.IncludeAddress.Yes)
                 ordertext += " With Address";
-            if (sendCopy == Vendor.SendCopy.No)
+            if (sendCopy == Vendor.SendCopy.Yes)
                 ordertext += " With Copy";
 
             var operationResult = new OperationResult(true, ordertext);

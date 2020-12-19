@@ -181,8 +181,8 @@ namespace Acme.Biz.Tests
             var product = new Product();
 
             var actual = vendor.PlaceOrder(product, 4,
-                                includeAddress: Vendor.IncludeAddress.Yes,
-                                sendCopy: Vendor.SendCopy.No);
+                                Vendor.IncludeAddress.Yes,
+                                Vendor.SendCopy.Yes);
             var expectedOrderText = $"Test With Address With Copy";
 
             Assert.IsTrue(actual.Success);
@@ -196,8 +196,8 @@ namespace Acme.Biz.Tests
             var product = new Product();
 
             var actual = vendor.PlaceOrder(product, 4,
-                                includeAddress: Vendor.IncludeAddress.Yes,
-                                sendCopy: Vendor.SendCopy.No);
+                                Vendor.IncludeAddress.Yes,
+                                Vendor.SendCopy.No);
             var expectedOrderText = $"Test With Address";
 
             Assert.IsTrue(actual.Success);
@@ -211,13 +211,14 @@ namespace Acme.Biz.Tests
             var product = new Product();
 
             var actual = vendor.PlaceOrder(product, 4,
-                                includeAddress: Vendor.IncludeAddress.No,
-                                sendCopy: Vendor.SendCopy.Yes);
+                                Vendor.IncludeAddress.No,
+                                Vendor.SendCopy.Yes);
             var expectedOrderText = $"Test With Copy";
 
             Assert.IsTrue(actual.Success);
             Assert.AreEqual(expectedOrderText, actual.Message);
         }
+
         [TestMethod]
         public void PlaceOrder_NoAddress_NoCopy()
         {
@@ -225,8 +226,8 @@ namespace Acme.Biz.Tests
             var product = new Product();
 
             var actual = vendor.PlaceOrder(product, 4,
-                                includeAddress: Vendor.IncludeAddress.No,
-                                sendCopy: Vendor.SendCopy.No);
+                                Vendor.IncludeAddress.No,
+                                Vendor.SendCopy.No);
             var expectedOrderText = $"Test";
 
             Assert.IsTrue(actual.Success);
