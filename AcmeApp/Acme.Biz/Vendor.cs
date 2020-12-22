@@ -21,12 +21,12 @@ namespace Acme.Biz
 
         public OperationResult PlaceOrder(Product product, int quantity)
         {
-            return PlaceOrder(product, quantity);
+            return PlaceOrder(product, quantity, null, null);
         }
 
         public OperationResult PlaceOrder(Product product, int quantity, DateTimeOffset? deliverBy)
         {
-            return PlaceOrder(product, quantity, deliverBy);
+            return PlaceOrder(product, quantity, deliverBy, null);
         }
 
         /// <summary>
