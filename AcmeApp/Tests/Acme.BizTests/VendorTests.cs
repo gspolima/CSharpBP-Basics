@@ -98,7 +98,8 @@ namespace Acme.Biz.Tests
             var expectedMessage = "Order from Acme, Inc"+
                                     $"{Environment.NewLine}Product: Tools-1"+
                                     $"{Environment.NewLine}Quantity: 4"+
-                                    $"{Environment.NewLine}Deliver by: 24/12/2020";
+                                    $"{Environment.NewLine}Deliver by: 24/12/2020"+
+                                    $"{Environment.NewLine}Instructions: standard delivery";
             var actual = vendor.PlaceOrder(product, 4, 
                                             new DateTimeOffset(
                                                 2020, 12, 24, 0, 0, 0, 
@@ -128,10 +129,12 @@ namespace Acme.Biz.Tests
             var vendor = new Vendor();
             var product = new Product();
 
-            var actual = vendor.PlaceOrder(product, 4, null);
+            var actual = vendor.PlaceOrder(product, 4);
             var expectedMessage = "Order from Acme, Inc"+
-                "\r\nProduct: Tools-1\r\nQuantity: 4";
-            
+                                    $"{Environment.NewLine}Product: Tools-1" +
+                                    $"{Environment.NewLine}Quantity: 4" +
+                                    $"{Environment.NewLine}Instructions: standard delivery";
+
             Assert.IsTrue(actual.Success);
             Assert.AreEqual(expectedMessage, actual.Message);
         }
@@ -234,5 +237,21 @@ namespace Acme.Biz.Tests
             Assert.AreEqual(expectedOrderText, actual.Message);
         }
 
+        [TestMethod]
+        public void PlaceOrder_NullDeliverBy_Instructions()
+        {
+            var vendor = new Vendor();
+            var product = new Product();
+
+            var actual = vendor.PlaceOrder(product, 7, instructions: "express delivery");
+
+            var expectedOrderText = $"Order from Acme, Inc" +
+                                    $"{Environment.NewLine}Product: Tools-1" +
+                                    $"{Environment.NewLine}Quantity: 7" +
+                                    $"{Environment.NewLine}Instructions: express delivery";
+
+            Assert.IsTrue(actual.Success);
+            Assert.AreEqual(expectedOrderText, actual.Message);
+        }
     }
 }

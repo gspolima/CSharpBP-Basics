@@ -19,16 +19,6 @@ namespace Acme.Biz
 
         public enum SendCopy { Yes, No };
 
-        public OperationResult PlaceOrder(Product product, int quantity)
-        {
-            return PlaceOrder(product, quantity, null, null);
-        }
-
-        public OperationResult PlaceOrder(Product product, int quantity, DateTimeOffset? deliverBy)
-        {
-            return PlaceOrder(product, quantity, deliverBy, null);
-        }
-
         /// <summary>
         /// Places a new product order
         /// </summary>
@@ -38,7 +28,8 @@ namespace Acme.Biz
         /// <param name="instructions">optional further instructions</param>
         /// <returns>success flag and order text</returns>
         public OperationResult PlaceOrder(Product product, int quantity, 
-                                            DateTimeOffset? deliverBy, string instructions)
+                                            DateTimeOffset? deliverBy = null, 
+                                            string instructions = "standard delivery")
         {
             if (IsProductNull(product))
                 throw new ArgumentNullException($"{nameof(product)} is null");
