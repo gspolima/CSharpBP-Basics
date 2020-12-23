@@ -262,14 +262,14 @@ namespace Acme.Biz.Tests
             vendor.CompanyName = "Apple Corps";
             var actual = vendor.ToString();
 
-            var expectedOutput = $"Supplier: Apple Corps";
-            var expectedLenght = 21;
-            var expectedIndex = 8;
+            var expectedOutput = $"Vendor: Apple Corps";
+            var expectedLenght = 19;
+            var expectedIndex = 6;
 
             Assert.AreEqual(expectedOutput, actual);
             Assert.AreEqual(expectedLenght, actual.Length);
             Assert.AreEqual(expectedIndex, actual.IndexOf(":"));
-            Assert.IsTrue(actual.StartsWith("Supplier"));
+            Assert.IsTrue(actual.StartsWith("Vendor"));
         }
     }
 }

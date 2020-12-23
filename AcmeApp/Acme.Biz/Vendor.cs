@@ -132,17 +132,20 @@ namespace Acme.Biz
         public override string ToString()
         {
             string vendorInfo = $"Vendor: {this.CompanyName}";
-
             string result;
-            result = vendorInfo.ToLower();
-            result = vendorInfo.ToUpper();
-            result = vendorInfo.Replace("Vendor", "Supplier");
 
-            var lenght = vendorInfo.Length;
-            var index = vendorInfo.IndexOf(":");
-            var begins = vendorInfo.StartsWith("Vendor");
+            if (!String.IsNullOrWhiteSpace(vendorInfo))
+            {
+                result = vendorInfo?.ToLower();
+                result = vendorInfo?.ToUpper();
+                result = vendorInfo?.Replace("Vendor", "Supplier");
+
+                var lenght = vendorInfo?.Length;
+                var index = vendorInfo?.IndexOf(":");
+                var begins = vendorInfo?.StartsWith("Vendor");
+            }
             
-            return result;
+            return vendorInfo;
         }
     }
 }
