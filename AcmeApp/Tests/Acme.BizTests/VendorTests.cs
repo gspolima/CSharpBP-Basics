@@ -253,5 +253,23 @@ namespace Acme.Biz.Tests
             Assert.IsTrue(actual.Success);
             Assert.AreEqual(expectedOrderText, actual.Message);
         }
+
+        [TestMethod]
+        public void ToString_Override()
+        {
+            var vendor = new Vendor();
+
+            vendor.CompanyName = "Apple Corps";
+            var actual = vendor.ToString();
+
+            var expectedOutput = $"Supplier: Apple Corps";
+            var expectedLenght = 21;
+            var expectedIndex = 8;
+
+            Assert.AreEqual(expectedOutput, actual);
+            Assert.AreEqual(expectedLenght, actual.Length);
+            Assert.AreEqual(expectedIndex, actual.IndexOf(":"));
+            Assert.IsTrue(actual.StartsWith("Supplier"));
+        }
     }
 }
