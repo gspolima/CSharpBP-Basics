@@ -163,7 +163,7 @@ namespace Acme.BizTests
         {
             var product = new Product();
 
-            var expected = "Tools-1";
+            var expected = "Tools-0001";
             var actual = product.ProductCode;
             Assert.AreEqual(expected, actual);
         }

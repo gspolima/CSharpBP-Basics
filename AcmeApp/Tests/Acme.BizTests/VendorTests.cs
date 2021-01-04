@@ -96,7 +96,7 @@ namespace Acme.Biz.Tests
             var product = new Product();
 
             var expectedMessage = "Order from Acme, Inc"+
-                                    $"{Environment.NewLine}Product: Tools-1"+
+                                    $"{Environment.NewLine}Product: Tools-0001"+
                                     $"{Environment.NewLine}Quantity: 4"+
                                     $"{Environment.NewLine}Deliver by: 24/12/2021"+
                                     $"{Environment.NewLine}Instructions: standard delivery";
@@ -131,7 +131,7 @@ namespace Acme.Biz.Tests
 
             var actual = vendor.PlaceOrder(product, 4);
             var expectedMessage = "Order from Acme, Inc"+
-                                    $"{Environment.NewLine}Product: Tools-1" +
+                                    $"{Environment.NewLine}Product: Tools-0001" +
                                     $"{Environment.NewLine}Quantity: 4" +
                                     $"{Environment.NewLine}Instructions: standard delivery";
 
@@ -150,7 +150,7 @@ namespace Acme.Biz.Tests
                                                         new TimeSpan(-4, 0, 0)), 
                                                         "Handle with care");
             var expectedMessage = $"Order from Acme, Inc" +
-                                    $"{Environment.NewLine}Product: Tools-1" +
+                                    $"{Environment.NewLine}Product: Tools-0001" +
                                     $"{Environment.NewLine}Quantity: 4" +
                                     $"{Environment.NewLine}Deliver by: 24/12/2021" +
                                     $"{Environment.NewLine}Instructions: Handle with care";
@@ -170,7 +170,7 @@ namespace Acme.Biz.Tests
                                                         new TimeSpan(-4, 0, 0)),
                                                         null);
             var expectedMessage = $"Order from Acme, Inc" +
-                                    $"{Environment.NewLine}Product: Tools-1" +
+                                    $"{Environment.NewLine}Product: Tools-0001" +
                                     $"{Environment.NewLine}Quantity: 4" +
                                     $"{Environment.NewLine}Deliver by: 24/12/2021";
 
@@ -246,7 +246,7 @@ namespace Acme.Biz.Tests
             var actual = vendor.PlaceOrder(product, 7, instructions: "express delivery");
 
             var expectedOrderText = $"Order from Acme, Inc" +
-                                    $"{Environment.NewLine}Product: Tools-1" +
+                                    $"{Environment.NewLine}Product: Tools-0001" +
                                     $"{Environment.NewLine}Quantity: 7" +
                                     $"{Environment.NewLine}Instructions: express delivery";
 

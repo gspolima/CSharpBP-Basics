@@ -55,7 +55,7 @@ namespace Acme.Biz
         public decimal CalculateSuggestedPrice(decimal markupPercentage)
             => this.Cost + ((this.Cost * markupPercentage) / 100);
 
-        public string ProductCode => $"{this.Category}-{this.SequenceNumber}";
+        public string ProductCode => $"{this.Category}-{this.SequenceNumber:0000}";
 
         internal string Category { get; set; }
 
