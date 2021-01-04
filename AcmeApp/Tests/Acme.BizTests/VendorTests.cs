@@ -271,5 +271,30 @@ namespace Acme.Biz.Tests
             Assert.AreEqual(expectedIndex, actual.IndexOf(":"));
             Assert.IsTrue(actual.StartsWith("Vendor"));
         }
+
+        [TestMethod]
+        public void PrepareDirections_RightOutput()
+        {
+            var vendor = new Vendor();
+
+            var expected = @"Insert \r\n to define a new line in Windows systems";
+            var actual = vendor.PrepareDirections();
+            Console.WriteLine(actual);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void PrepareDirections_OnTwoLines()
+        {
+            var vendor = new Vendor();
+
+            var expected = "First do this " +
+                            Environment.NewLine +
+                            "then do that";
+            var actual = vendor.PrepareDirectionsOnTwoLines();
+            Console.WriteLine(actual);
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

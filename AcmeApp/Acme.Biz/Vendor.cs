@@ -147,5 +147,19 @@ namespace Acme.Biz
             
             return vendorInfo;
         }
+
+        public string PrepareDirections()
+        {
+            var directions = @"Insert \r\n to define a new line in Windows systems";
+            return directions;
+        }
+
+        public string PrepareDirectionsOnTwoLines()
+        {
+            var directions ="First do this " +
+                            Environment.NewLine +
+                            "then do that";
+            return directions;
+        }
     }
 }
