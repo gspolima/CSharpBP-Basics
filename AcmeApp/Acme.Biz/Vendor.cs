@@ -33,21 +33,19 @@ namespace Acme.Biz
         {
             if (IsProductNull(product))
                 throw new ArgumentNullException($"{nameof(product)} is null");
-
             if (!IsQuantityValid(quantity))
                 throw new ArgumentOutOfRangeException($"{nameof(quantity)} is out of range");
-
             if (deliverBy <= DateTimeOffset.Now)
                 throw new ArgumentOutOfRangeException($"{nameof(deliverBy)} is invalid");
 
-            string orderText = ComposeOrderText(product.ProductCode, quantity);
+            var orderTextBuilder = ComposeOrderText(product.ProductCode, quantity);
 
             if (deliverBy.HasValue)
-                orderText = AppendDeliverDate(deliverBy.Value, orderText);
-
+                orderTextBuilder = AppendDeliverDate(deliverBy.Value, orderTextBuilder);
             if (!String.IsNullOrWhiteSpace(instructions))
-                orderText = ApppendInstructions(instructions, orderText);
+                orderTextBuilder = ApppendInstructions(instructions, orderTextBuilder);
 
+            var orderText = orderTextBuilder.ToString();
             string confirmation = SendEmailConfirmation(orderText, product.Vendor.Email);
             var success = VerifyEmailSent(confirmation);
 
@@ -69,15 +67,15 @@ namespace Acme.Biz
             return operationResult;
         }
 
-        private string ApppendInstructions(string instructions, string orderText)
+        private StringBuilder ApppendInstructions(string instructions, StringBuilder orderText)
         {
-            orderText += $"{Environment.NewLine}Instructions: {instructions}";
+            orderText.Append($"{Environment.NewLine}Instructions: {instructions}");
             return orderText;
         }
 
-        private string AppendDeliverDate(DateTimeOffset? deliverBy, string orderText)
+        private StringBuilder AppendDeliverDate(DateTimeOffset? deliverBy, StringBuilder orderText)
         {
-            orderText += $"{Environment.NewLine}Deliver by: {deliverBy.Value.ToString("d")}";
+            orderText.Append($"{Environment.NewLine}Deliver by: {deliverBy.Value.ToString("d")}");
             return orderText;
         }
 
@@ -96,11 +94,11 @@ namespace Acme.Biz
                 return false;
         }
 
-        internal string ComposeOrderText(string productCode, int quantity)
+        internal StringBuilder ComposeOrderText(string productCode, int quantity)
         {
-            return $"Order from Acme, Inc" +
+            return new StringBuilder($"Order from Acme, Inc" +
                     $"{Environment.NewLine}Product: {productCode}" +
-                    $"{Environment.NewLine}Quantity: {quantity}";
+                    $"{Environment.NewLine}Quantity: {quantity}");
         }
 
         internal bool IsQuantityValid(int quantity)
